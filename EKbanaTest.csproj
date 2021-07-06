@@ -6,6 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210706030754_InitialCreate.cs" />
+    <Compile Remove="Migrations\20210706030754_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20210706032453_ChangedEmployeeTable.cs" />
+    <Compile Remove="Migrations\20210706032453_ChangedEmployeeTable.Designer.cs" />
+    <Compile Remove="Migrations\20210706032748_ChangedEmployeeTable2.cs" />
+    <Compile Remove="Migrations\20210706032748_ChangedEmployeeTable2.Designer.cs" />
+    <Compile Remove="Migrations\20210706034955_ChangedEmployeeTable3.cs" />
+    <Compile Remove="Migrations\20210706034955_ChangedEmployeeTable3.Designer.cs" />
+    <Compile Remove="Migrations\20210706035202_ChangedEmployeeTable4.cs" />
+    <Compile Remove="Migrations\20210706035202_ChangedEmployeeTable4.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
@@ -21,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

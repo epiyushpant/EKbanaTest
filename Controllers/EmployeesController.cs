@@ -7,23 +7,37 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EKbanaTest.DAL;
 using EKbanaTest.Models;
+using EKbanaTest.Commands;
+using EKbanaTest.Queries;
+using EKbanaTest.DTO;
 
 namespace EKbanaTest.Controllers
 {
     public class EmployeesController : Controller
     {
-        private readonly ApplicationDBContext _context;
+        //private readonly ApplicationDBContext _context;
 
-        public EmployeesController(ApplicationDBContext context)
+
+        private readonly IEmployeeCommandsRepo _employeeCommandRepo;
+        private readonly IEmployeeQueriesRepo _employeeQueriesRepo;
+
+        private readonly IRoleQueriesRepo _roleQueriesRepo;   
+        public EmployeesController(IEmployeeCommandsRepo employeeCommandRepo, IEmployeeQueriesRepo employeeQueriesRepo, IRoleQueriesRepo roleQueriesRepo)
         {
-            _context = context;
+            _employeeCommandRepo = employeeCommandRepo;
+            _employeeQueriesRepo = employeeQueriesRepo;
+            _roleQueriesRepo = roleQueriesRepo;
         }
 
+       
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var applicationDBContext = _context.Employees.Include(e => e.Roles);
-            return View(await applicationDBContext.ToListAsync());
+
+            return View(_employeeQueriesRepo.GetAll());
+
+            //var applicationDBContext = _context.Employees.Include(e => e.Roles);
+            //return View(await applicationDBContext.ToListAsync());
         }
 
         // GET: Employees/Details/5
@@ -34,9 +48,14 @@ namespace EKbanaTest.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
+            var employee = _employeeQueriesRepo.Find(id.GetValueOrDefault());
+
+           /* var employee = await _context.Employees
                 .Include(e => e.Roles)
                 .FirstOrDefaultAsync(m => m.EmployeeId == id);
+
+            */
+
             if (employee == null)
             {
                 return NotFound();
@@ -48,7 +67,9 @@ namespace EKbanaTest.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName");
+     
+            ViewBag.RoleId = new SelectList(_roleQueriesRepo.GetAll(), "RoleId", "RoleName");
+            ViewBag.EmployeeParentId = new SelectList(_employeeQueriesRepo.GetAll(), "EmployeeId", "Name");
             return View();
         }
 
@@ -57,15 +78,24 @@ namespace EKbanaTest.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,EmployeeParentId,Name,Passsword,ConfirmPassword,RoleId,DateOfBirth")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeId,EmployeeParentId,Name,Email,Passsword,RoleId,DateOfBirth")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
+                _employeeCommandRepo.Add(employee);         
                 return RedirectToAction(nameof(Index));
             }
+
+             
+             /*ViewBag.RoleId = new SelectList(_context.Roles, "RoleId", "RoleName");
+             ViewBag.EmployeeParentId = new SelectList(_context.Employees, "EmployeeId", "Name");
+
             ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
+             ViewData["EmployeeParentId"] = new SelectList(_context.Employees, "EmployeeId", "Name", employee.EmployeeId);
+
+             */
+
+
             return View(employee);
         }
 
@@ -77,12 +107,18 @@ namespace EKbanaTest.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = _employeeCommandRepo.Find(id.GetValueOrDefault());
+
+
+            ViewBag.RoleId = new SelectList(_roleQueriesRepo.GetAll(), "RoleId", "RoleName");
+            ViewBag.EmployeeParentId = new SelectList(_employeeQueriesRepo.GetAll(), "EmployeeId", "Name");
+
+            //var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
+            //ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
             return View(employee);
         }
 
@@ -91,7 +127,7 @@ namespace EKbanaTest.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,EmployeeParentId,Name,Passsword,ConfirmPassword,RoleId,DateOfBirth")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,EmployeeParentId,Name,Email,Passsword,RoleId,DateOfBirth")] Employee employee)
         {
             if (id != employee.EmployeeId)
             {
@@ -102,12 +138,12 @@ namespace EKbanaTest.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
+                    _employeeCommandRepo.Update(employee);
+                  
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.EmployeeId))
+                   /* if (!EmployeeExists(employee.EmployeeId))
                     {
                         return NotFound();
                     }
@@ -115,10 +151,18 @@ namespace EKbanaTest.Controllers
                     {
                         throw;
                     }
+
+                    */
                 }
                 return RedirectToAction(nameof(Index));
             }
+            /*ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
             ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
+            */
+
+           // ViewBag.RoleId = new SelectList(_context.Roles, "RoleId", "RoleName");
+           // ViewBag.EmployeeParentId = new SelectList(_context.Employees, "EmployeeId", "Name");
+
             return View(employee);
         }
 
@@ -130,9 +174,7 @@ namespace EKbanaTest.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Roles)
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+            var employee = _employeeQueriesRepo.Find(id.GetValueOrDefault());
             if (employee == null)
             {
                 return NotFound();
@@ -145,16 +187,12 @@ namespace EKbanaTest.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+        {    
+
+           _employeeCommandRepo.Remove(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.EmployeeId == id);
-        }
+       
     }
 }

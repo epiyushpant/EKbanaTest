@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EKbanaTest.Models.Employee>
+﻿@model IEnumerable<EKbanaTest.DTO.EmployeeQueries>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeParentId)
+                @Html.DisplayNameFor(model => model.EmployeeParentName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Passsword)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ConfirmPassword)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Roles)
+                @Html.DisplayNameFor(model => model.RoleName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateOfBirth)
@@ -37,19 +37,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.EmployeeParentId)
+                @Html.DisplayFor(modelItem => item.EmployeeParentName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Passsword)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ConfirmPassword)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Roles.RoleName)
+                @Html.DisplayFor(modelItem => item.RoleName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateOfBirth)

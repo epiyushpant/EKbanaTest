@@ -7,22 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EKbanaTest.DAL;
 using EKbanaTest.Models;
+using EKbanaTest.Commands;
+using EKbanaTest.Queries;
 
 namespace EKbanaTest.Controllers
 {
     public class RolesController : Controller
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IRoleCommandsRepo _roleCommandRepo;
+        private readonly IRoleQueriesRepo _roleQueriesRepo;
 
-        public RolesController(ApplicationDBContext context)
+        public RolesController(IRoleCommandsRepo roleCommandRepo, IRoleQueriesRepo roleQueriesRepo)
         {
-            _context = context;
+            _roleCommandRepo = roleCommandRepo;
+            _roleQueriesRepo = roleQueriesRepo;
         }
 
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Roles.ToListAsync());
+            //return View(await _context.Roles.ToListAsync());
+
+            return View(_roleQueriesRepo.GetAll());
         }
 
         // GET: Roles/Details/5
@@ -33,8 +39,8 @@ namespace EKbanaTest.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.RoleId == id);
+   
+            var role = _roleQueriesRepo.Find(id.GetValueOrDefault());
             if (role == null)
             {
                 return NotFound();
@@ -58,8 +64,7 @@ namespace EKbanaTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(role);
-                await _context.SaveChangesAsync();
+                _roleCommandRepo.Add(role);
                 return RedirectToAction(nameof(Index));
             }
             return View(role);
@@ -73,7 +78,7 @@ namespace EKbanaTest.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles.FindAsync(id);
+            var role = _roleQueriesRepo.Find(id.GetValueOrDefault());
             if (role == null)
             {
                 return NotFound();
@@ -95,10 +100,12 @@ namespace EKbanaTest.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+
+                _roleCommandRepo.Update(role);
+               /* try
                 {
-                    _context.Update(role);
-                    await _context.SaveChangesAsync();
+                    _roleCommandRepo.Update(role);
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -111,6 +118,7 @@ namespace EKbanaTest.Controllers
                         throw;
                     }
                 }
+               */
                 return RedirectToAction(nameof(Index));
             }
             return View(role);
@@ -119,35 +127,30 @@ namespace EKbanaTest.Controllers
         // GET: Roles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.RoleId == id);
+            var role = _roleQueriesRepo.Find(id.GetValueOrDefault());
+
+
             if (role == null)
             {
                 return NotFound();
             }
 
+
             return View(role);
         }
 
+        
+        
         // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
+            _roleCommandRepo.Remove(id);
             return RedirectToAction(nameof(Index));
         }
-
-        private bool RoleExists(int id)
-        {
-            return _context.Roles.Any(e => e.RoleId == id);
-        }
+        
+ 
     }
 }

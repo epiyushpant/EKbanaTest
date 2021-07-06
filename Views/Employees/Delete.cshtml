@@ -1,4 +1,4 @@
-﻿@model EKbanaTest.Models.Employee
+﻿@model EKbanaTest.DTO.EmployeeQueries
 
 @{
     ViewData["Title"] = "Delete";
@@ -12,10 +12,10 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmployeeParentId)
+            @Html.DisplayNameFor(model => model.EmployeeParentName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmployeeParentId)
+            @Html.DisplayFor(model => model.EmployeeParentName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -24,22 +24,22 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Passsword)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Passsword)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ConfirmPassword)
+            @Html.DisplayNameFor(model => model.RoleName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ConfirmPassword)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Roles)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Roles.RoleName)
+            @Html.DisplayFor(model => model.RoleName)
         </dd class>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DateOfBirth)

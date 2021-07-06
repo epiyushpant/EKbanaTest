@@ -1,11 +1,17 @@
-﻿using System;
+﻿using EKbanaTest.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace EKbanaTest.Queries
 {
-    public class IRoleQueriesRepo
+    public interface IRoleQueriesRepo
     {
+
+        List<Role> GetAll();
+
+        Role Find(int Id);
+
     }
 }

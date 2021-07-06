@@ -1,4 +1,4 @@
-﻿@model EKbanaTest.Models.Employee
+﻿@model EKbanaTest.DTO.EmployeeQueries
 
 @{
     ViewData["Title"] = "Details";
@@ -10,40 +10,40 @@
     <h4>Employee</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmployeeParentId)
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.EmployeeParentName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmployeeParentId)
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.EmployeeParentName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.Passsword)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.Passsword)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ConfirmPassword)
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.RoleName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ConfirmPassword)
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.RoleName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Roles)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Roles.RoleName)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.DateOfBirth)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.DateOfBirth)
         </dd>
     </dl>
