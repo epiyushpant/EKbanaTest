@@ -35,12 +35,19 @@ namespace EKbanaTest
                 options.UseSqlServer(Configuration.GetConnectionString("ApplicationDBContext"));
             });
 
+
             services.AddTransient<IEmployeeCommandsRepo, EmployeeCommandsRepo>();
             services.AddTransient<IEmployeeQueriesRepo, EmployeeQueriesRepo>();
             services.AddTransient<IRoleCommandsRepo, RoleCommandsRepo>();
             services.AddTransient<IRoleQueriesRepo, RoleQueriesRepo>();
 
-           // services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddTransient<IEmployeeLoginRepo, EmployeeLoginRepo>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,8 +74,14 @@ namespace EKbanaTest
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=Login}/{id?}"
+                    
+                    );
+                  
             });
+
+
+
         }
     }
 }

@@ -9,9 +9,11 @@ using EKbanaTest.DAL;
 using EKbanaTest.Models;
 using EKbanaTest.Commands;
 using EKbanaTest.Queries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EKbanaTest.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly IRoleCommandsRepo _roleCommandRepo;
