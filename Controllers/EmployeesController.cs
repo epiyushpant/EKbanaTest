@@ -14,8 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EKbanaTest.Controllers
 {
-  
-    public class EmployeesController : Controller
+
+    [Authorize]
+     public class EmployeesController : Controller
     {
         //private readonly ApplicationDBContext _context;
 
