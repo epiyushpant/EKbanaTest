@@ -28,7 +28,7 @@ namespace EKbanaTest.Controllers
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            //return View(await _context.Roles.ToListAsync());
+          
 
             return View(_roleQueriesRepo.GetAll());
         }
@@ -103,24 +103,7 @@ namespace EKbanaTest.Controllers
             if (ModelState.IsValid)
             {
 
-                _roleCommandRepo.Update(role);
-               /* try
-                {
-                    _roleCommandRepo.Update(role);
-                    
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoleExists(role.RoleId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-               */
+                _roleCommandRepo.Update(role);        
                 return RedirectToAction(nameof(Index));
             }
             return View(role);

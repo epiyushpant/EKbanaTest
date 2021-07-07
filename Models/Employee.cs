@@ -28,20 +28,6 @@ namespace EKbanaTest.Models
         [DataType(DataType.Password)]
         public string Passsword { get; set; }
 
-        /*
-        [NotMapped]
-        [StringLength(8, ErrorMessage ="Must be between 5 and 8 character",MinimumLength =5)]
-        [Required(ErrorMessage = "Confirm Password is Required")]  
-       
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm Password ")]
-        [Compare("Password", ErrorMessage ="Confirm password doesnot match")]
-        public string ConfirmPassword { get; set; }
-
-        */
-
-        
-
         [Required(ErrorMessage = "Role is Required")]
         [Display(Name = "Role Name")]
         public virtual int RoleId { get; set; }

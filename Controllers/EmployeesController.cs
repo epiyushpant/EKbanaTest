@@ -18,7 +18,7 @@ namespace EKbanaTest.Controllers
     [Authorize]
      public class EmployeesController : Controller
     {
-        //private readonly ApplicationDBContext _context;
+       
 
 
         private readonly IEmployeeCommandsRepo _employeeCommandRepo;
@@ -39,8 +39,7 @@ namespace EKbanaTest.Controllers
 
             return View(_employeeQueriesRepo.GetAll());
 
-            //var applicationDBContext = _context.Employees.Include(e => e.Roles);
-            //return View(await applicationDBContext.ToListAsync());
+           
         }
 
         // GET: Employees/Details/5
@@ -53,11 +52,7 @@ namespace EKbanaTest.Controllers
 
             var employee = _employeeQueriesRepo.Find(id.GetValueOrDefault());
 
-           /* var employee = await _context.Employees
-                .Include(e => e.Roles)
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
-
-            */
+        
 
             if (employee == null)
             {
@@ -89,14 +84,7 @@ namespace EKbanaTest.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-             
-             /*ViewBag.RoleId = new SelectList(_context.Roles, "RoleId", "RoleName");
-             ViewBag.EmployeeParentId = new SelectList(_context.Employees, "EmployeeId", "Name");
-
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
-             ViewData["EmployeeParentId"] = new SelectList(_context.Employees, "EmployeeId", "Name", employee.EmployeeId);
-
-             */
+           
 
 
             return View(employee);
@@ -116,12 +104,12 @@ namespace EKbanaTest.Controllers
             ViewBag.RoleId = new SelectList(_roleQueriesRepo.GetAll(), "RoleId", "RoleName");
             ViewBag.EmployeeParentId = new SelectList(_employeeQueriesRepo.GetAll(), "EmployeeId", "Name");
 
-            //var employee = await _context.Employees.FindAsync(id);
+          
             if (employee == null)
             {
                 return NotFound();
             }
-            //ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
+          
             return View(employee);
         }
 
@@ -139,32 +127,11 @@ namespace EKbanaTest.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _employeeCommandRepo.Update(employee);
-                  
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                   /* if (!EmployeeExists(employee.EmployeeId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-
-                    */
-                }
-                return RedirectToAction(nameof(Index));
+                
+             _employeeCommandRepo.Update(employee);
+               return RedirectToAction(nameof(Index));
             }
-            /*ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", employee.RoleId);
-            */
-
-           // ViewBag.RoleId = new SelectList(_context.Roles, "RoleId", "RoleName");
-           // ViewBag.EmployeeParentId = new SelectList(_context.Employees, "EmployeeId", "Name");
+            
 
             return View(employee);
         }
