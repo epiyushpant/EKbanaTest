@@ -38,10 +38,7 @@ namespace EKbanaTest.Controllers
 
             if (ModelState.IsValid)
             {
-                // note : real time we save password with encryption into the database
-                // so to check that viewModel.Password also need to encrypt with same algorithm 
-                // and then that encrypted password value need compare with database password value
-
+               
                 var user = _empLoginRepo.ValidateEmployee(emp);
 
                 if(user != null)
@@ -53,7 +50,7 @@ namespace EKbanaTest.Controllers
                              new Claim("Name",user.Name)
                             };
 
-                    //var userRoles = _ApplicationDBContext.UserRole.Join(_ApplicationDBContext.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => new { ur.RoleId, r.RoleName, ur.UserId }).Where(_ => _.UserId == user.Id).ToList();
+                  
                     var userRoles = _employeeQueriesRepo.Find(user.EmployeeId);
                     var roleClaim = new Claim(ClaimTypes.Role, userRoles.RoleName); ;
                     claims.Add(roleClaim);
